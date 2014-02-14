@@ -1,8 +1,9 @@
 
 #include "craft.h"
 #include "engine.h"
+#include "weapon.h"
 
-Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Position, Rotation)
+Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Engine::Instance->LoadMeshFile("resource/X-17 Viper flying.obj"), Position, Rotation)
 {
 	Cam = 0;
 	CurrentThrust = 2;
@@ -11,20 +12,17 @@ Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Positi
 	TurnSpeed = 1.5;
 	Acceleration = 0.4;
 	Deceleration = 0.3;
+	Model->setMaterialFlag( video::EMF_LIGHTING, false );
+	Model->setScale( core::vector3df(0.1f) );
+
+	LeftWeapon = new Weapon( this );
+	RightWeapon = new Weapon( this );
 }
 
 
 void Craft::SetCamera(scene::ICameraSceneNode *Camera)
 {
 	Cam = Camera;
-}
-
-
-void Craft::setModel()
-{
-	Model = Engine::Instance->GetSceneManager()->addAnimatedMeshSceneNode( Engine::Instance->GetSceneManager()->getMesh("resource/X-17 Viper flying.obj") );  // addCubeSceneNode();
-	Model->setMaterialFlag( video::EMF_LIGHTING, false );
-	Model->setScale( core::vector3df(0.1f) );
 }
 
 void Craft::makeCockpit(irr::core::vector3df offset)
@@ -90,5 +88,22 @@ void Craft::Update()
 		{
 			CurrentThrust = MinimumThrust;
 		}
+	}
+
+	if( LeftWeapon != 0 )
+	{
+		if( Engine::Instance->GetKeyState(irr::KEY_KEY_A) || Engine::Instance->GetKeyState(irr::KEY_NEXT) )
+		{
+			LeftWeapon->Fire();
+		}
+		LeftWeapon->Update();
+	}
+	if( RightWeapon != 0 )
+	{
+		if( Engine::Instance->GetKeyState(irr::KEY_KEY_D) || Engine::Instance->GetKeyState(irr::KEY_END) )
+		{
+			RightWeapon->Fire();
+		}
+		RightWeapon->Update();
 	}
 }

@@ -3,6 +3,7 @@
 
 #include "graphics.h"
 #include <vector>
+#include <string>
 
 #ifndef Body
 class Body;
@@ -21,10 +22,13 @@ class Engine : public IEventReceiver
 		u32 timeLastCheck;
 		u32 timeFrameTime;
 
+		std::vector<Body*> ObjectsToAdd;
+
 	public:
 		static Engine* Instance;
 		
 		std::vector<Body*> Objects;
+		
 
 		Engine();
 		~Engine();
@@ -39,5 +43,8 @@ class Engine : public IEventReceiver
 		void Update();
 
 		bool GetKeyState( int KeyID );
+		scene::IAnimatedMesh* LoadMeshFile( std::string Filename );
+
+		void AddBody( Body* NewBody );
 
 };

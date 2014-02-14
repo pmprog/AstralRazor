@@ -2,10 +2,18 @@
 #include "body.h"
 #include "engine.h"
 
-Body::Body( core::vector3df Position, core::vector3df Rotation )
+Body::Body( scene::IAnimatedMesh* Mesh, core::vector3df Position, core::vector3df Rotation )
 {
 	CurrentThrust = 0;
-	setModel();
+
+
+	if( Mesh == 0 )
+	{
+		Model = Engine::Instance->GetSceneManager()->addCubeSceneNode();
+		Model->setMaterialFlag( video::EMF_LIGHTING, false );
+	} else {
+		Model = Engine::Instance->GetSceneManager()->addAnimatedMeshSceneNode( Mesh );
+	}
 	Model->setPosition( Position );
 	Model->setRotation( Rotation );
 	
@@ -14,12 +22,6 @@ Body::Body( core::vector3df Position, core::vector3df Rotation )
 Body::~Body()
 {
 	Model->remove();
-}
-
-void Body::setModel()
-{
-	Model = Engine::Instance->GetSceneManager()->addCubeSceneNode();
-	Model->setMaterialFlag( video::EMF_LIGHTING, false );
 }
 
 void Body::move(irr::core::vector3df vel)
@@ -57,7 +59,27 @@ void Body::roll(irr::f32 rot)
 	rotate(irr::core::vector3df(0.0f, 0.0f, rot) );
 }
 
+core::vector3df Body::GetPosition()
+{
+	return Model->getPosition();
+}
+
+core::vector3df Body::GetRotation()
+{
+	return Model->getRotation();
+}
+
 void Body::Update()
 {
 	move( core::vector3df( 0, 0, CurrentThrust ) );
+}
+
+f32 Body::GetThrust()
+{
+	return CurrentThrust;
+}
+
+void Body::SetThrust(f32 Thrust)
+{
+	CurrentThrust = Thrust;
 }

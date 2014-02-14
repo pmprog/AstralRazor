@@ -3,6 +3,10 @@
 
 #include "body.h"
 
+#ifndef Weapon
+class Weapon;
+#endif
+
 class Craft : public Body
 {
 
@@ -16,10 +20,10 @@ class Craft : public Body
 		f32 Acceleration;
 		f32 Deceleration;
 
-	protected:
-		virtual void setModel();
-
 	public:
+		Weapon* LeftWeapon;
+		Weapon* RightWeapon;
+
 		Craft( core::vector3df Position, core::vector3df Rotation );
 		void SetCamera(scene::ICameraSceneNode *Camera);
 

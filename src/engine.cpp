@@ -42,13 +42,13 @@ Engine::Engine()
 	Objects.push_back( ply );
 
 
-	for( int zX = -16; zX <= 16; zX += 4 )
+	for( int zX = -64; zX <= 64; zX += 8 )
 	{
-		for( int zY = -16; zY <= 16; zY += 4 )
+		for( int zY = -64; zY <= 64; zY += 8 )
 		{
-			for( int zZ = -16; zZ <= 16; zZ += 4 )
+			for( int zZ = -64; zZ <= 64; zZ += 8 )
 			{
-				scene::ISceneNode* node2 = sceneManager->addCubeSceneNode(); //just for reference
+				scene::ISceneNode* node2 = sceneManager->addCubeSceneNode();
 				if (node2)
 				{
 					node2->setMaterialFlag(video::EMF_LIGHTING, false);
@@ -127,6 +127,12 @@ void Engine::Update()
 		Body* b = (*i);
 		b->Update();
 	}
+
+	while( ObjectsToAdd.size() > 0 )
+	{
+		Objects.push_back( ObjectsToAdd.back() );
+		ObjectsToAdd.pop_back();
+	}
 }
 
 bool Engine::GetKeyState( int KeyID )
@@ -134,114 +140,12 @@ bool Engine::GetKeyState( int KeyID )
 	return keys[KeyID];
 }
 
-/*
-int main()
+scene::IAnimatedMesh* Engine::LoadMeshFile( std::string Filename )
 {
-	float playerThrust = 0.6f;
-	float playerTurn = 2.4f - playerThrust;
-
-	
-
-	video::IVideoDriver* driver = device->getVideoDriver();
-	scene::ISceneManager* smgr = device->getSceneManager();
-
-	scene::ISceneNode* node1 = smgr->addCubeSceneNode(); //replace with what ever you want
-	if (node1)
-		node1->setMaterialFlag(video::EMF_LIGHTING, false);
-
-	for( int zX = -4; zX <= 4; zX += 4 )
-	{
-		for( int zY = -4; zY <= 4; zY += 4 )
-		{
-			for( int zZ = -4; zZ <= 4; zZ += 4 )
-			{
-				scene::ISceneNode* node2 = smgr->addCubeSceneNode(); //just for reference
-				if (node2)
-				{
-					node2->setMaterialFlag(video::EMF_LIGHTING, false);
-					node2->setPosition(core::vector3df( 100 * zX, 100 * zY, 100 * zZ));
-				}
-
-			}
-		}
-	}
-
-
-	scene::ICameraSceneNode *camera = device->getSceneManager()->addCameraSceneNode();
-
-	while(device->run())
-	{
-
-		// direction control
-		if(keys[irr::KEY_LEFT])
-		{
-			turn(node1, -playerTurn);
-		}
-		if(keys[irr::KEY_RIGHT])
-		{
-			turn(node1, playerTurn);
-		}
-		if(keys[irr::KEY_UP])
-		{
-			pitch(node1, playerTurn);
-		}
-		if(keys[irr::KEY_DOWN])
-		{
-			pitch(node1, -playerTurn);
-		}
-		if(keys[irr::KEY_COMMA] || keys[irr::KEY_HOME])
-		{
-			roll(node1, playerTurn);
-		}
-		if(keys[irr::KEY_PERIOD] || keys[irr::KEY_END])
-		{
-			roll(node1, -playerTurn);
-		}
-
-		if(keys[irr::KEY_RSHIFT] || keys[irr::KEY_NEXT])
-		{
-			playerThrust -= 0.2f;
-			if( playerThrust < 0.1f )
-			{
-				playerThrust = 0.1f;
-			}
-			playerTurn = 2.4f - playerThrust;
-		}
-
-		if(keys[irr::KEY_RCONTROL] || keys[irr::KEY_PRIOR])
-		{
-			playerThrust += 0.2f;
-			if( playerThrust > 2.0f )
-			{
-				playerThrust = 2.0f;
-			}
-			playerTurn = 2.4f - playerThrust;
-		}
-
-		// movement control
-		if(keys[irr::KEY_KEY_W])
-		{
-		move(node1, core::vector3df(0,0,0.1));
-		}
-		if(keys[irr::KEY_KEY_S])
-		{
-		move(node1, core::vector3df(0,0,-0.1));
-		}
-
-		move(node1, core::vector3df(0,0,playerThrust));
-
-		makeCockpit(camera, node1, core::vector3df(0,7,-30));
-
-		driver->endScene();
-
-		if( keys[irr::KEY_ESCAPE] || keys[irr::KEY_KEY_Q])
-		{
-			device->closeDevice();
-		}
-	}
-
-	device->drop();
-
-	return 1;
+	return sceneManager->getMesh( Filename.c_str() );
 }
-*/
+
+void Engine::AddBody( Body* NewBody )
+{
+	ObjectsToAdd.push_back( NewBody );
+}

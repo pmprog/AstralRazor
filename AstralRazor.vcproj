@@ -188,6 +188,10 @@
 				RelativePath=".\src\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\weapon.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -208,6 +212,10 @@
 			</File>
 			<File
 				RelativePath=".\src\graphics.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\weapon.h"
 				>
 			</File>
 		</Filter>
