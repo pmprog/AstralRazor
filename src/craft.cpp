@@ -16,7 +16,7 @@ Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Engine
 	Model->setScale( core::vector3df(0.1f) );
 
 	LeftWeapon = new Weapon( this );
-	RightWeapon = new Weapon( this );
+	RightWeapon = 0; // new Weapon( this );
 }
 
 
