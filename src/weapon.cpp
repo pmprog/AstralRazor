@@ -108,8 +108,9 @@ std::string Weapon::WeaponName()
 
 Body* Weapon::SpawnBullet()
 {
-	Body* b = new Body( 0, owner->GetPosition(), owner->GetRotation() );
+	Body* b = new Body( Engine::Instance->LoadMeshFile("resource/bullet.obj"), owner->GetPosition(), owner->GetRotation() );
 	b->SetThrust( 80.0 );
+	b->Update();
 	Engine::Instance->AddBody( b );
 	return b;
 }

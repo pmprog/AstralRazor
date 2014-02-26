@@ -10,10 +10,12 @@ Body::Body( scene::IAnimatedMesh* Mesh, core::vector3df Position, core::vector3d
 	if( Mesh == 0 )
 	{
 		Model = Engine::Instance->GetSceneManager()->addCubeSceneNode();
-		Model->setMaterialFlag( video::EMF_LIGHTING, false );
+		//Model->setMaterialFlag( video::EMF_LIGHTING, false );
 	} else {
 		Model = Engine::Instance->GetSceneManager()->addAnimatedMeshSceneNode( Mesh );
+		// Model->setMaterialFlag( video::EMF_LIGHTING, false );
 	}
+	Model->setMaterialFlag( video::EMF_LIGHTING, false );
 	Model->setPosition( Position );
 	Model->setRotation( Rotation );
 	

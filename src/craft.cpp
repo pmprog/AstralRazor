@@ -1,10 +1,9 @@
-// seb was here
 
 #include "craft.h"
 #include "engine.h"
 #include "weapon.h"
 
-Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Engine::Instance->LoadMeshFile("resource/X-17 Viper flying.obj"), Position, Rotation)
+Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Engine::Instance->LoadMeshFile("resource/space1.obj"), Position, Rotation)
 {
 	Cam = 0;
 	CurrentThrust = 2;
@@ -14,7 +13,7 @@ Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Engine
 	Acceleration = 0.4;
 	Deceleration = 0.3;
 	Model->setMaterialFlag( video::EMF_LIGHTING, false );
-	Model->setScale( core::vector3df(0.1f) );
+	Model->setScale( core::vector3df(10.0f) );
 
 	LeftWeapon = new Weapon( this );
 	RightWeapon = 0; // new Weapon( this );
