@@ -1,4 +1,3 @@
-
 #include "body.h"
 #include "engine.h"
 
@@ -9,10 +8,10 @@ Body::Body( scene::IAnimatedMesh* Mesh, core::vector3df Position, core::vector3d
 
 	if( Mesh == 0 )
 	{
-		Model = Engine::Instance->GetSceneManager()->addCubeSceneNode();
+		Model = Engine::Instance->GetSceneManager()->addCubeSceneNode( 10.0f, Engine::Instance->GetSceneParentNode() );
 		//Model->setMaterialFlag( video::EMF_LIGHTING, false );
 	} else {
-		Model = Engine::Instance->GetSceneManager()->addAnimatedMeshSceneNode( Mesh );
+		Model = Engine::Instance->GetSceneManager()->addAnimatedMeshSceneNode( Mesh, Engine::Instance->GetSceneParentNode() );
 		// Model->setMaterialFlag( video::EMF_LIGHTING, false );
 	}
 	Model->setMaterialFlag( video::EMF_LIGHTING, false );
