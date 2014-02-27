@@ -37,22 +37,25 @@ Engine::Engine()
 	//ply = new Player();
 	//ply->SetCamera( camera );
 
-	Craft* ply = new Craft( core::vector3df(0), core::vector3df(0) );
-	ply->SetCamera( camera );
-	Objects.push_back( ply );
+	player = new Craft( core::vector3df(0), core::vector3df(0) );
+	player->SetCamera( camera );
+	Objects.push_back( player );
+
+	Craft* pX = new Craft( core::vector3df(0, 0, 200), core::vector3df(0) );
+	Objects.push_back( pX );
 
 
-	for( int zX = -64; zX <= 64; zX += 8 )
+	for( int zX = -39; zX <= 39; zX += 5 )
 	{
-		for( int zY = -64; zY <= 64; zY += 8 )
+		for( int zY = -39; zY <= 39; zY += 5 )
 		{
-			for( int zZ = -64; zZ <= 64; zZ += 8 )
+			for( int zZ = -39; zZ <= 39; zZ += 5 )
 			{
-				scene::ISceneNode* node2 = sceneManager->addCubeSceneNode();
+				scene::ISceneNode* node2 = sceneManager->addCubeSceneNode( 10.0f, sceneParent ); // (abs(zX) * abs(zY) * abs(zZ)) / 10.0f );
 				if (node2)
 				{
 					node2->setMaterialFlag(video::EMF_LIGHTING, false);
-					node2->setPosition(core::vector3df( 100 * zX, 100 * zY, 100 * zZ));
+					node2->setPosition(core::vector3df( 200 * zX, 200 * zY, 200 * zZ));
 				}
 
 			}
@@ -106,7 +109,7 @@ void Engine::Run()
 			timeDeltaTime -= timeFrameTime;
 		}
 
-		if( keys[irr::KEY_ESCAPE] || keys[irr::KEY_KEY_Q])
+		if( keys[irr::KEY_ESCAPE] || keys[irr::KEY_KEY_Q] )
 		{
 			device->closeDevice();
 		}
@@ -117,7 +120,31 @@ void Engine::Run()
 
 void Engine::Render()
 {
+	sceneParent->setPosition( core::vector3df( 0.0f, 0.0f, 0.0f ) );
 	sceneManager->drawAll();
+
+	
+	core::vector3df v = player->GetPosition() + ( player->GetRotation() * 6000.0f );
+
+	for( int zX = -1; zX <= 1; zX++ )
+	{
+		for( int zY = -1; zY <= 1; zY++ )
+		{
+			for( int zZ = -1; zZ <= 1; zZ++ )
+			{
+				if( (zX == 1 && v.X > 8000.0f) || (zX == -1 && v.X < -8000.0f)
+						|| (zY == 1 && v.Y > 8000.0f) || (zY == -1 && v.Y < -8000.0f)
+						|| (zZ == 1 && v.Z > 8000.0f) || (zZ == -1 && v.Z < -8000.0f)
+					)
+				{
+					sceneParent->setPosition( core::vector3df( zX * 8000.0f, zY * 8000.0f, zZ * 8000.0f ) );
+					sceneManager->drawAll();
+				}
+			}
+		}
+	}
+	sceneParent->setPosition( core::vector3df( 0.0f, 0.0f, 0.0f ) );
+
 }
 
 void Engine::Update()

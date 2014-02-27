@@ -8,6 +8,10 @@
 class Body;
 #endif
 
+#ifndef Craft
+class Craft;
+#endif
+
 class Engine : public IEventReceiver
 {
 	private:
@@ -17,6 +21,7 @@ class Engine : public IEventReceiver
 		scene::ISceneManager* sceneManager;
 		scene::ICameraSceneNode* camera;
 		scene::ISceneNode* sceneParent;
+		Craft* player;
 
 		u32 timeDeltaTime;
 		u32 timeLastCheck;

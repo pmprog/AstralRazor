@@ -13,6 +13,7 @@ class Craft : public Body
 	private:
 		scene::ICameraSceneNode *Cam;
 		void makeCockpit(irr::core::vector3df offset);
+		bool Controlled;
 
 		f32 MaximumThrust;
 		f32 MinimumThrust;

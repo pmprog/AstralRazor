@@ -5,9 +5,10 @@
 
 Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Engine::Instance->LoadMeshFile("resource/space1.obj"), Position, Rotation)
 {
+	Controlled = false;
 	Cam = 0;
-	CurrentThrust = 2;
-	MaximumThrust = 20.0;
+	CurrentThrust = 20.0;
+	MaximumThrust = 80.0;
 	MinimumThrust = 0.0;
 	TurnSpeed = 1.5;
 	Acceleration = 0.4;
@@ -23,6 +24,7 @@ Craft::Craft( core::vector3df Position, core::vector3df Rotation ) : Body(Engine
 void Craft::SetCamera(scene::ICameraSceneNode *Camera)
 {
 	Cam = Camera;
+	Controlled = true;
 }
 
 void Craft::makeCockpit(irr::core::vector3df offset)
@@ -57,53 +59,57 @@ void Craft::Update()
 		makeCockpit( core::vector3df( 0.0f, 24.0f, -60.0f ) );
 	}
 
-	if( Engine::Instance->GetKeyState(irr::KEY_UP) )
+	if( Controlled )
 	{
-		pitch(TurnSpeed);
-	}
-	if( Engine::Instance->GetKeyState(irr::KEY_DOWN) )
-	{
-		pitch(-TurnSpeed);
-	}
-	if( Engine::Instance->GetKeyState(irr::KEY_LEFT) )
-	{
-		roll(TurnSpeed);
-	}
-	if( Engine::Instance->GetKeyState(irr::KEY_RIGHT) )
-	{
-		roll(-TurnSpeed);
-	}
-	if( Engine::Instance->GetKeyState(irr::KEY_KEY_W) || Engine::Instance->GetKeyState(irr::KEY_RCONTROL) || Engine::Instance->GetKeyState(irr::KEY_PRIOR) )
-	{
-		CurrentThrust += Acceleration;
-		if( CurrentThrust > MaximumThrust )
+		if( Engine::Instance->GetKeyState(irr::KEY_UP) )
 		{
-			CurrentThrust = MaximumThrust;
+			pitch(TurnSpeed);
 		}
-	}
-	if( Engine::Instance->GetKeyState(irr::KEY_KEY_S) || Engine::Instance->GetKeyState(irr::KEY_RSHIFT) || Engine::Instance->GetKeyState(irr::KEY_HOME) )
-	{
-		CurrentThrust -= Deceleration;
-		if( CurrentThrust < MinimumThrust )
+		if( Engine::Instance->GetKeyState(irr::KEY_DOWN) )
 		{
-			CurrentThrust = MinimumThrust;
+			pitch(-TurnSpeed);
 		}
-	}
+		if( Engine::Instance->GetKeyState(irr::KEY_LEFT) )
+		{
+			roll(TurnSpeed);
+		}
+		if( Engine::Instance->GetKeyState(irr::KEY_RIGHT) )
+		{
+			roll(-TurnSpeed);
+		}
+		if( Engine::Instance->GetKeyState(irr::KEY_KEY_W) || Engine::Instance->GetKeyState(irr::KEY_RCONTROL) || Engine::Instance->GetKeyState(irr::KEY_PRIOR) )
+		{
+			CurrentThrust += Acceleration;
+			if( CurrentThrust > MaximumThrust )
+			{
+				CurrentThrust = MaximumThrust;
+			}
+		}
+		if( Engine::Instance->GetKeyState(irr::KEY_KEY_S) || Engine::Instance->GetKeyState(irr::KEY_RSHIFT) || Engine::Instance->GetKeyState(irr::KEY_HOME) )
+		{
+			CurrentThrust -= Deceleration;
+			if( CurrentThrust < MinimumThrust )
+			{
+				CurrentThrust = MinimumThrust;
+			}
+		}
 
-	if( LeftWeapon != 0 )
-	{
-		if( Engine::Instance->GetKeyState(irr::KEY_KEY_A) || Engine::Instance->GetKeyState(irr::KEY_NEXT) )
+		if( LeftWeapon != 0 )
 		{
-			LeftWeapon->Fire();
+			if( Engine::Instance->GetKeyState(irr::KEY_KEY_A) || Engine::Instance->GetKeyState(irr::KEY_NEXT) )
+			{
+				LeftWeapon->Fire();
+			}
+			LeftWeapon->Update();
 		}
-		LeftWeapon->Update();
-	}
-	if( RightWeapon != 0 )
-	{
-		if( Engine::Instance->GetKeyState(irr::KEY_KEY_D) || Engine::Instance->GetKeyState(irr::KEY_END) )
+		if( RightWeapon != 0 )
 		{
-			RightWeapon->Fire();
+			if( Engine::Instance->GetKeyState(irr::KEY_KEY_D) || Engine::Instance->GetKeyState(irr::KEY_END) )
+			{
+				RightWeapon->Fire();
+			}
+			RightWeapon->Update();
 		}
-		RightWeapon->Update();
+
 	}
 }

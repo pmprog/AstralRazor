@@ -30,7 +30,35 @@ void Body::move(irr::core::vector3df vel)
 	irr::core::matrix4 m;
 	m.setRotationDegrees(Model->getRotation());
 	m.transformVect(vel);
-	Model->setPosition(Model->getPosition() + vel);
+
+	vel = Model->getPosition() + vel;
+
+	if( vel.X > 8000.0f )
+	{
+		vel.X -= 16000.0f;
+	}
+	if( vel.X < -8000.0f )
+	{
+		vel.X += 16000.0f;
+	}
+	if( vel.Y > 8000.0f )
+	{
+		vel.Y -= 16000.0f;
+	}
+	if( vel.Y < -8000.0f )
+	{
+		vel.Y += 16000.0f;
+	}
+	if( vel.Z > 8000.0f )
+	{
+		vel.Z -= 16000.0f;
+	}
+	if( vel.Z < -8000.0f )
+	{
+		vel.Z += 16000.0f;
+	}
+
+	Model->setPosition(vel);
 	Model->updateAbsolutePosition();
 }
 
