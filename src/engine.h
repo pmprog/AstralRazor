@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "graphics.h"
@@ -17,6 +16,7 @@ class Engine : public IEventReceiver
 		video::IVideoDriver* driver;
 		scene::ISceneManager* sceneManager;
 		scene::ICameraSceneNode* camera;
+		scene::ISceneNode* sceneParent;
 
 		u32 timeDeltaTime;
 		u32 timeLastCheck;
