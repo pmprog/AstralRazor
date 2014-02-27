@@ -1,4 +1,3 @@
-
 #include "engine.h"
 #include "body.h"
 #include "craft.h"
@@ -30,6 +29,7 @@ Engine::Engine()
 	sceneManager = device->getSceneManager();
 
 	camera = sceneManager->addCameraSceneNode();
+	sceneParent = sceneManager->addEmptySceneNode();
 
 	timeDeltaTime = 0;
 	timeFrameTime = 1000 / 50;	// 50FPS default
@@ -148,4 +148,9 @@ scene::IAnimatedMesh* Engine::LoadMeshFile( std::string Filename )
 void Engine::AddBody( Body* NewBody )
 {
 	ObjectsToAdd.push_back( NewBody );
+}
+
+scene::ISceneNode* Engine::GetSceneParentNode()
+{
+	return sceneParent;
 }
