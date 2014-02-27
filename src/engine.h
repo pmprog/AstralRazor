@@ -46,5 +46,6 @@ class Engine : public IEventReceiver
 		scene::IAnimatedMesh* LoadMeshFile( std::string Filename );
 
 		void AddBody( Body* NewBody );
+		scene::ISceneNode* GetSceneParentNode();
 
 };
